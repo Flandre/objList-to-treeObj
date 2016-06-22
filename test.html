@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+  var testObjArr = [
+    {
+      'id': 1,
+      'pid': 6
+    },
+    {
+      'id': 2,
+      'pid': 0
+    },
+    {
+      'id': 3,
+      'pid': 2
+    },
+    {
+      'id': 4,
+      'pid': 2
+    },
+    {
+      'id': 5,
+      'pid': 3
+    },
+    {
+      'id': 6,
+      'pid': 3
+    }
+  ];
+  var testTreeObj = {};
+  //  遍历原对象数组新对象,以pid为键值
+  for(var i = 0; i < testObjArr.length; i++){
+    testObjArr[i].child = [];
+    if(testTreeObj[testObjArr[i].pid]){
+      testTreeObj[testObjArr[i].pid].push(testObjArr[i])
+    }else{
+      testTreeObj[testObjArr[i].pid] = [];
+      testTreeObj[testObjArr[i].pid].push(testObjArr[i])
+    }
+  }
+  //console.log(JSON.stringify(testTreeObj));
+
+  //  遍历父节点为0的对象，取出Id匹配新对象的键值
+  for(var i = 0; i < testTreeObj['0'].length; i++){
+    addTree(testTreeObj['0'][i])
+  }
+  //  将匹配的对象数组加入父对象的child中，并删除此对象
+  function addTree(obj){
+    if(!!testTreeObj[obj.id]){
+      obj.child = testTreeObj[obj.id];
+      delete testTreeObj[obj.id];
+      for(var i = 0; i < obj.child.length; i++){
+        addTree(obj.child[i])
+      }
+    }
+  }
+
+  console.log(JSON.stringify(testTreeObj));
+
+</script>
+</html>
